@@ -1,0 +1,23 @@
+# One-click deploy on Render: New + > Blueprint > pick your repo.
+services:
+  - type: web
+    name: documind-ai
+    runtime: docker
+    plan: free            # free plan has NO persistent disk: uploads/DB reset on redeploy.
+    healthCheckPath: /api/health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        value: "12345"    # change this for a public deployment
+      - key: VIEWER_PASSWORD
+        value: "123"      # change this for a public deployment
+      - key: DATA_DIR
+        value: /data
+      - key: ANTHROPIC_API_KEY
+        sync: false
+    # For persistent data use a paid plan and uncomment:
+    # disk:
+    #   name: documind-data
+    #   mountPath: /data
+    #   sizeGB: 1
